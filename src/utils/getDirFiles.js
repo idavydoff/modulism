@@ -1,5 +1,8 @@
 const fs = require("fs");
 const path = require("path");
+const { combineRegExps } = require('./combineRegExps');
+
+const regExpTemplate = (ext) => new RegExp(`^(?!.*\\.d\.tsx?$).*\\.${ext}$`, 'g');
 
 const walk = (dir, done) => {
   let results = [];
@@ -27,12 +30,28 @@ const walk = (dir, done) => {
   });
 };
 
-const getDirFiles = (dir) => new Promise((res, rej) => {
+const getFilesList = (dir) => new Promise((res, rej) => {
   walk(dir, (err, results) => {
     if (err) res([]);
     res(results);
   });
 })
+
+const getDirFiles = async (path, extensions) => {
+  const filesList = await getFilesList(path);
+    
+  const filteredFilesList = filesList
+    .filter((f) => f.match(
+      combineRegExps(extensions.map((ext) => regExpTemplate(ext)), 'g')
+    ));
+  const modulismFiles = filesList.filter((f) => f.includes('.modulism') && !f.includes('config.modulism.json'));
+
+  return {
+    files: filteredFilesList,
+    modulismFiles,
+  }
+}
+
 
 module.exports = {
   getDirFiles

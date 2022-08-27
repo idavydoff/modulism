@@ -1,9 +1,12 @@
 #!/usr/bin/env node
-const checkMode = require('./checkMode');
-const createMode = require('./createMode');
-const deleteMode = require('./deleteMode');
-const editMode = require('./editMode');
-const initMode = require('./initMode');
+const checkMode = require('./modes/checkMode');
+const createMode = require('./modes/createMode');
+const deleteMode = require('./modes/deleteMode');
+const editMode = require('./modes/editMode');
+const initMode = require('./modes/initMode');
+const renameMode = require('./modes/renameMode');
+const syncMode = require('./modes/syncMode');
+const logMode = require('./modes/logMode');
 const { checkConfigFileForErrors } = require('./checkConfigFileForErrors');
 const { removeConfigDuplicates } = require('./removeConfigDuplicates');
 const { fireError } = require('./utils/fireError');
@@ -13,6 +16,7 @@ const main = () => {
     case 'check':
     case 'create':
     case 'edit':
+    case 'rename':
     case 'delete':
       checkConfigFileForErrors();
       removeConfigDuplicates();
@@ -33,7 +37,16 @@ const main = () => {
       deleteMode();
       break;
     case 'init':
-      initMode()
+      initMode();
+      break;
+    case 'rename':
+      renameMode();
+      break;
+    case 'sync':
+      syncMode();
+      break;
+    case 'log':
+      logMode();
       break;
     default:
       fireError('ERROR: Unexpected argument')

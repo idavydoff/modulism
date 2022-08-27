@@ -1,6 +1,6 @@
-const fireError = (err) => {
+const fireError = (err, withoutExit) => {
   console.log('\x1b[31m', err);
-  process.exit(1);
+  if (!withoutExit) process.exit(1);
 }
 
 module.exports = { 

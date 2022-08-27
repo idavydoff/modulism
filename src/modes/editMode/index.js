@@ -1,6 +1,6 @@
-const { updateConfigFile } = require('../utils/updateConfigFile');
-const { getConfigData } = require('../utils/getConfigData');
-const { fireError } = require('../utils/fireError');
+const { updateConfigFile } = require('../../utils/updateConfigFile');
+const { getConfigData } = require('../../utils/getConfigData');
+const { fireError } = require('../../utils/fireError');
 
 const editMode = async () => {
   const configData = getConfigData();
@@ -8,7 +8,7 @@ const editMode = async () => {
   const editType = process.argv[4];
   const moduleName = process.argv[5];
 
-  if (!targetModuleName | !editType | !moduleName) 
+  if (!targetModuleName || !editType || !moduleName) 
     fireError('ERROR: Provide all arguments (Example: modulism edit <targetModuleName> <import|remove> <moduleName>)');  
   
   if (editType !== 'import' && editType !== 'remove') 

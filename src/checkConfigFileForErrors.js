@@ -1,3 +1,4 @@
+const { fireError } = require('./utils/fireError');
 const { getConfigData } = require('./utils/getConfigData');
 
 const checkConfigFileForErrors = () => {
@@ -6,8 +7,7 @@ const checkConfigFileForErrors = () => {
   !Array.isArray(configData) &&
   configData !== null;
   if (!isConfigDataAnObject) {
-    console.log('\x1b[31m', `CONFIG ERROR: Config file doesn't contain an object.`)
-    process.exit(1);
+    fireError("CONFIG ERROR: Config file doesn't contain an object.");
   }
 
   const errors = [];
@@ -21,7 +21,7 @@ const checkConfigFileForErrors = () => {
   if (!configData.modules) {
     errors.push(`CONFIG ERROR: Config file doesn't contain 'modules' property.`)
 
-    errors.forEach((e) => console.log('\x1b[31m', e));
+    errors.forEach((e) => fireError(e, true));
     process.exit(1);
   }
 
@@ -67,7 +67,7 @@ const checkConfigFileForErrors = () => {
   }
 
   if (errors.length) {
-    errors.forEach((e) => console.log('\x1b[31m', e));
+    errors.forEach((e) => fireError(e, true));
     process.exit(1);
   }
 }

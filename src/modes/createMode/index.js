@@ -1,6 +1,6 @@
-const { updateConfigFile } = require('../utils/updateConfigFile');
-const { getConfigData } = require('../utils/getConfigData');
-const { fireError } = require('../utils/fireError');
+const { updateConfigFile } = require('../../utils/updateConfigFile');
+const { getConfigData } = require('../../utils/getConfigData');
+const { fireError } = require('../../utils/fireError');
 
 const createMode = async () => {
   const configData = getConfigData();

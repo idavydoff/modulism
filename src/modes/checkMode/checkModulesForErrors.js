@@ -1,3 +1,5 @@
+const { fireError } = require("../../utils/fireError");
+
 const checkModulesForErrors = (configData, files, modules) => {
   const configDataEntries = Object.entries(configData);
   const filesEntries = Object.entries(files);
@@ -52,7 +54,7 @@ const checkModulesForErrors = (configData, files, modules) => {
   }
 
   if (errors.length) {
-    errors.forEach((e) => console.log('\x1b[31m', e));
+    errors.forEach((e) => fireError(e, true));
     process.exit(1);
   }
 }

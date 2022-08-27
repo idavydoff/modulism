@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs');
-const { fireError } = require('../utils/fireError');
-const { updateConfigFile } = require('../utils/updateConfigFile');
+const { fireError } = require('../../utils/fireError');
+const { updateConfigFile } = require('../../utils/updateConfigFile');
 
 const initMode = () => {
   const configFilePath = path.resolve(process.cwd(), './config.modulism.json');
