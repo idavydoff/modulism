@@ -124,6 +124,7 @@ It will update your config file with all data it got from parsing your project.
 To check the information about your project's modules run `modulism log` in terminal. It will return all modules with their dependencies. If you want to check specific modules just write them like this `modulism log <module1> <module2>...`. 
 
 **Example log result of a module:**
+
 ![Example](https://i.imgur.com/xABkyAJ.png)
 ##### - Blue dots are groups which are being imported to module.
 ##### - Purple dots are groups which module is exporting.
