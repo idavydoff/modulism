@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const { combineRegExps } = require('./combineRegExps');
+const { ObjectFromEntries } = require('./ObjectFromEntries');
 
 const regExpTemplate = (ext) => new RegExp(`^(?!.*\\.d\.tsx?$).*\\.${ext}$`, 'g');
 
@@ -46,9 +47,16 @@ const getDirFiles = async (path, extensions) => {
     ));
   const modulismFiles = filesList.filter((f) => f.includes('.modulism') && !f.includes('config.modulism.json'));
 
+  const filesData = ObjectFromEntries(filteredFilesList.map((f) => {
+    const data = fs.readFileSync(f, "utf8");
+
+    return [f, data];
+  }));
+
   return {
     files: filteredFilesList,
     modulismFiles,
+    filesData
   }
 }
 

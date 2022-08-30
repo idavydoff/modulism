@@ -1,5 +1,6 @@
 const { fireError } = require('./utils/fireError');
 const { getConfigData } = require('./utils/getConfigData');
+const { clearModulesFromGroups } = require('./utils/clearModulesFromGroups');
 
 const checkConfigFileForErrors = () => {
   const configData = getConfigData();
@@ -29,38 +30,42 @@ const checkConfigFileForErrors = () => {
 
   for (let i = 0; i < configDataEntries.length; i++) {
     const { imports, exports } = configDataEntries[i][1];
+  
+    const cImports = clearModulesFromGroups(imports);
+    const cExports = clearModulesFromGroups(exports);
+
     const mName = configDataEntries[i][0];
 
-    if (!imports) {
+    if (!cImports) {
       errors.push(`CONFIG ERROR: Module "${mName}" dosn't have "imports" field.`)
     }
-    else if (!Array.isArray(imports)) {
+    else if (!Array.isArray(cImports)) {
       errors.push(`CONFIG ERROR: "imports" field of module "${mName}" is not an array.`)
     }
     else {
-      for (let k = 0; k < imports.length; k++) {
-        if (!configData.modules[imports[k]]) {
-          errors.push(`CONFIG ERROR: Module "${imports[k]}" doesn't exist. Check module "${mName}" imports.`);
+      for (let k = 0; k < cImports.length; k++) {
+        if (!configData.modules[cImports[k]]) {
+          errors.push(`CONFIG ERROR: Module "${cImports[k]}" doesn't exist. Check module "${mName}" imports.`);
         }
-        else if (!configData.modules[imports[k]].exports.includes(mName)) {
-          errors.push(`CONFIG ERROR: Module "${mName}" has an import for module "${imports[k]}" but this module's exports doesn't include module "${mName}".`)
+        else if (!clearModulesFromGroups(configData.modules[cImports[k]].exports).includes(mName)) {
+          errors.push(`CONFIG ERROR: Module "${mName}" has an import for module "${cImports[k]}" but this module's exports doesn't include module "${mName}".`)
         }
       }
     }
 
-    if (!exports) {
+    if (!cExports) {
       errors.push(`CONFIG ERROR: Module "${mName}" dosn't have "exports" field.`)
     }
-    else if (!Array.isArray(exports)) {
+    else if (!Array.isArray(cExports)) {
       errors.push(`CONFIG ERROR: "exports" field of module "${mName}" is not an array.`)
     }
     else {
-      for (let k = 0; k < exports.length; k++) {
-        if (!configData.modules[exports[k]]) {
-          errors.push(`CONFIG ERROR: Module "${exports[k]}" doesn't exist. Check module "${mName}" exports.`);
+      for (let k = 0; k < cExports.length; k++) {
+        if (!configData.modules[cExports[k]]) {
+          errors.push(`CONFIG ERROR: Module "${cExports[k]}" doesn't exist. Check module "${mName}" exports.`);
         }
-        else if (!configData.modules[exports[k]].imports.includes(mName)) {
-          errors.push(`CONFIG ERROR: Module "${mName}" has an export for module "${exports[k]}" but this module's imports doesn't include module "${mName}".`)
+        else if (!clearModulesFromGroups(configData.modules[cExports[k]].imports).includes(mName)) {
+          errors.push(`CONFIG ERROR: Module "${mName}" has an export for module "${cExports[k]}" but this module's imports doesn't include module "${mName}".`)
         }
       }
     }

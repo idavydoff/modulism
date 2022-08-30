@@ -6,7 +6,7 @@ const getModules = require('../../getModules');
 const syncMode = async () => {
   const configData = getConfigData();
 
-  const { modules } = await getModules(
+  const { modules, moduleGroups } = await getModules(
     path.resolve(process.cwd(), configData.workDir), 
     configData.extensions.split(',').map((s) => s.trim()),
     configData.paths || {},
@@ -21,14 +21,17 @@ const syncMode = async () => {
     const exports = [];
 
     for (let k = 0; k < modulesKeys.length; k++) {
-      if (modules[modulesKeys[k]].includes(modulesKeys[i])) {
+      if (modules[modulesKeys[k]].map((m) => m.module).includes(modulesKeys[i])) {
         exports.push(modulesKeys[k]);
       }
     }
 
     res[modulesKeys[i]] = {
-      imports: modules[modulesKeys[i]].sort((a, b) => a.localeCompare(b)),
-      exports: exports.sort((a, b) => a.localeCompare(b))
+      imports: modules[modulesKeys[i]]
+        .map((mod) => `${mod.module}${mod.group ? ':' + mod.group : ''}`)
+        .sort((a, b) => a.localeCompare(b)),
+      exports: exports.sort((a, b) => a.localeCompare(b)),
+      groups: moduleGroups[modulesKeys[i]]
     }
   }
 

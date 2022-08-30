@@ -1,4 +1,5 @@
 const fs = require('fs');
+const { JS_EXTENSIONS } = require('../constants');
 const { combineRegExps } = require('../utils/combineRegExps');
 const { fireError } = require('../utils/fireError');
 const { parseES5Imports } = require('../utils/parseES5Imports');
@@ -7,25 +8,23 @@ const { parseLessCssImports } = require('../utils/parseLessCssImports');
 
 const endsWithRegExp = (ext) => new RegExp(`\\.${ext}$`, 'g');
 
-const getFileImports = (f) => new Promise((res) => {
-  const data = fs.readFileSync(f, "utf8");
-
+const getFileImports = (f, filesData) => {
   let imports = [];
 
-  if (f.match(endsWithRegExp('less'))) {
-    imports = [...parseLessCssImports(data)];
+  if (f.match(combineRegExps(['less', 'css'].map((ext) => endsWithRegExp(ext)), 'g'))) {
+    imports = [...parseLessCssImports(filesData)];
   }
-  else if (f.match(combineRegExps(['js', 'jsx', 'ts', 'tsx'].map((ext) => endsWithRegExp(ext)), 'g'))) {
-    const ES6Imports = parseES6Imports(data);
-    const ES5Imports = parseES5Imports(data);
+  else if (f.match(combineRegExps(JS_EXTENSIONS.map((ext) => endsWithRegExp(ext)), 'g'))) {
+    const ES6Imports = parseES6Imports(filesData);
+    const ES5Imports = parseES5Imports(filesData);
 
     imports = [...ES5Imports, ...ES6Imports];
   }
   else
     fireError(`PARSE ERROR: Extension of file ${f} is not supported.`);
 
-  res(imports)
-})
+  return imports;
+}
 
 module.exports = {
   getFileImports

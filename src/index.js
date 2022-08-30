@@ -18,6 +18,7 @@ const main = () => {
     case 'edit':
     case 'rename':
     case 'delete':
+    case 'log':
       checkConfigFileForErrors();
       removeConfigDuplicates();
       break;

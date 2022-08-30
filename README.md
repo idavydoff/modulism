@@ -1,14 +1,15 @@
 # Modulism
-Library for keeping track of how modules depend on each other in your project. **Keeps information about what do module imports and where it exports itself in one file**.
+Library for keeping track of how modules depend on each other in your project. **Keeps information about what do module imports and where it exports itself in one place**.
 
 [![npm version](https://img.shields.io/npm/v/modulism.svg?style=flat-square)](https://www.npmjs.com/package/modulism)
 
 ## Design goals
 * Simplify working with modular architecture in the project.
-* Put information about how modules depend on each other into one file.
+* Put information about how modules depend on each other into one place.
+* Make easier to detect unnecessary dependencies.
 
 ## How it works
-It simply reads all files in your working directory and parse all of their imports. After that, it determines which file belongs to which module (You mark a module by putting <moduleName>.modulism file in it's root directory). And then, it starts to check whether the imports and exports of modules obtained after analyzing the project files match the information from the modulism.config.json file.
+It simply reads all files in your working directory and parse all of their imports. After that, it determines which file belongs to which module (You mark a module by putting <moduleName>.modulism file in it's root directory). And then, you can see all this information by running `modulism log` command in your console.
 
 **- config.modulism.json file example**
 ```
@@ -56,7 +57,19 @@ scripts": {
 ```
 
 ## Getting started
-**All modulism cli commands must be fired from the root directory of your project.**
+1. **All modulism cli commands must be fired from the root directory of your project.**
+2. **All modules names must not contain any symbols except: latin characters, numbers, "_", "-". They also must not contain word "modulism".**
+3. **All modules groups names must not contain any symbols except: latin characters, numbers, "_", "-". They also must not contain words "modulism" and "common".**
+
+#### Supported file's list to parse imports from: 
+* js
+* jsx
+* ts
+* tsx
+* mjs
+* vue
+* less
+* css
 
 ### 1. Creating config file
 To create your modulism config file run `modulism init`.
@@ -65,7 +78,7 @@ Set `workDir` property to your project working directory.
 Example: `"workDir": "src"`
 
 Set `extensions` property to file extensions that your project uses. **( Currently only available extensions are ts, js, less and css )**
-Example: `"extensions": "ts, js, less",`
+Example: `"extensions": "ts, js, less"`
 
 **[Optional]** Set `paths` property to import path vatiables you use in your project.
 Example: 
@@ -83,19 +96,35 @@ Your modulism `paths` property:
 ### 2. Create modules
 Module is a folder with isolated code in it. Add an empty `<moduleName>.modulism` file in root directory of your module.
 
-After that run `modulism create moduleName` command in command line. You will see that your config file has been updated.
+You can also split your modules by groups so the result data would be more informative for you. You can do it in two ways.
+1. Determine group directory.
+2. Determine group file.
 
-### 3. Set up modules imports
-For every module you created you should set what other modules it uses. Do it by running command `modulism edit <targetModule> import <moduleThatWasImported>`.
+To determine group directory just add `.<groupName>.modulism` file in your group directory.
+To determine group file add `*modulism-group <groupName>` line in comments of your file.
 
-**For example.** If you have module "events" that uses functions from module "globalUtils" run `modulism edit events import globalUtils`.
-
-**- events module file example**
+**Example module:**
 ```
-...
-import { someUtil } from 'globalUtils/common'
-...
+moduleEvents
+    - constants
+        ...
+        .constants.modulism
+    - logic
+        ...
+        .logic.modulism
+    index.js
+    moduleEvents.modulism
 ```
 
-### 3. Run
-Run modulism check command to validate your project modules imports. `modulism check`
+### 3. Generate modules dependencies config
+Run `modulism sync`. 
+It will update your config file with all data it got from parsing your project.
+
+### 4. Log results
+To check the information about your project's modules run `modulism log` in terminal. It will return all modules with their dependencies. If you want to check specific modules just write them like this `modulism log <module1> <module2>...`. 
+
+**Example log result of a module:**
+![Example](https://i.imgur.com/xABkyAJ.png)
+##### - Blue dots are groups which are being imported to module.
+##### - Purple dots are groups which module is exporting.
+
