@@ -17,8 +17,12 @@ const deleteMode = async () => {
   const modulesNames = Object.keys(configData.modules);
 
   for (let i = 0; i < modulesNames.length; i++) {
-    const importsIndex = configData.modules[modulesNames[i]].imports.findIndex((el) => el === moduleToDeleteName);
-    const exportsIndex = configData.modules[modulesNames[i]].exports.findIndex((el) => el === moduleToDeleteName);
+    const importsIndex = configData.modules[modulesNames[i]].imports.findIndex(
+      (el) => el.includes(`${moduleToDeleteName}:`) || el === moduleToDeleteName
+    );
+    const exportsIndex = configData.modules[modulesNames[i]].exports.findIndex(
+      (el) => el.includes(`${moduleToDeleteName}:`) || el === moduleToDeleteName
+    );
 
     if (importsIndex > -1) {
       configData.modules[modulesNames[i]].imports.splice(importsIndex, 1);

@@ -26,9 +26,9 @@ const renameMode = async () => {
 
   for (let i = 0; i < modulesNames.length; i++) {
     configData.modules[modulesNames[i]].imports = 
-      configData.modules[modulesNames[i]].imports.map((mod) => mod === targetModuleName ? newModuleName : mod);
+      configData.modules[modulesNames[i]].imports.map((mod) => mod.replace(targetModuleName, newModuleName));
     configData.modules[modulesNames[i]].exports = 
-      configData.modules[modulesNames[i]].exports.map((mod) => mod === targetModuleName ? newModuleName : mod);
+      configData.modules[modulesNames[i]].exports.map((mod) => mod.replace(targetModuleName, newModuleName));
   }
 
   updateConfigFile(configData);

@@ -31,7 +31,7 @@ const syncMode = async () => {
         .map((mod) => `${mod.module}${mod.group ? ':' + mod.group : ''}`)
         .sort((a, b) => a.localeCompare(b)),
       exports: exports.sort((a, b) => a.localeCompare(b)),
-      groups: moduleGroups[modulesKeys[i]]
+      groups: (moduleGroups[modulesKeys[i]] || []).map((gr) => ({...gr, url: gr.url.replace(process.cwd(), '')}))
     }
   }
 

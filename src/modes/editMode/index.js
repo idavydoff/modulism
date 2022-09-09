@@ -10,6 +10,8 @@ const editMode = async () => {
 
   if (!targetModuleName || !editType || !moduleName) 
     fireError('ERROR: Provide all arguments (Example: modulism edit <targetModuleName> <import|remove> <moduleName>)');  
+
+  const [mod, group] = moduleName.split(':')
   
   if (editType !== 'import' && editType !== 'remove') 
     fireError('ERROR: Second argument can only be "import" or "edit" (Example: modulism edit <targetModuleName> <import|remove> <moduleName>)');  
@@ -17,12 +19,12 @@ const editMode = async () => {
   if (!configData.modules[targetModuleName]) 
     fireError(`CONFIG ERROR: Module "${targetModuleName}" doesn't exist.`);  
   
-  if (!configData.modules[moduleName]) 
-    fireError(`CONFIG ERROR: Module "${moduleName}" doesn't exist.`);  
+  if (!configData.modules[mod]) 
+    fireError(`CONFIG ERROR: Module "${mod}" doesn't exist.`);  
 
   if (editType === 'import') {
     if (configData.modules[targetModuleName].imports.includes(moduleName)) 
-      fireError(`ERROR: Module "${targetModuleName}" already imports module "${moduleName}".`);    
+      fireError(`ERROR: Module "${targetModuleName}" already imports "${moduleName}".`);    
     
     configData.modules[targetModuleName].imports.push(moduleName);
     if (!configData.modules[moduleName].exports.includes(targetModuleName)) {

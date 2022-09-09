@@ -1,7 +1,9 @@
 # Modulism
-Library for keeping track of how modules depend on each other in your project. **Keeps information about what do module imports and where it exports itself in one place**.
+Library for keeping track of how modules depend on each other in your project. **Allows you to see where the module is being used and what other modules it imports by one command.**.
 
 [![npm version](https://img.shields.io/npm/v/modulism.svg?style=flat-square)](https://www.npmjs.com/package/modulism)
+
+[DOCUMENTATION](https://davy.page/modulism)
 
 ## Design goals
 * Simplify working with modular architecture in the project.
@@ -9,7 +11,7 @@ Library for keeping track of how modules depend on each other in your project. *
 * Make easier to detect unnecessary dependencies.
 
 ## How it works
-It simply reads all files in your working directory and parse all of their imports. After that, it determines which file belongs to which module (You mark a module by putting <moduleName>.modulism file in it's root directory). And then, you can see all this information by running `modulism log` command in your console.
+It simply reads all files in your working directory and parse all of their imports. After that, it determines which file belongs to which module (You mark a module by putting <moduleName>.modulism file in it's root directory). And then, you can see all the information by running `modulism log` command in your console.
 
 **- config.modulism.json file example**
 ```

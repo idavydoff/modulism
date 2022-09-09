@@ -1,3 +1,4 @@
+const path = require('path');
 const { getConfigData } = require('../../utils/getConfigData');
 const { fireError } = require('../../utils/fireError');
 const { convertImports } = require('./convertImports');
@@ -43,7 +44,6 @@ const logMode = async () => {
     }
     if (groups && groups.length && modulesToLog.length) {
       console.log('\x1b[0m\x1b[36m', 'Groups:');
-
       groups.forEach((gr) => {
         console.log('\x1b[0m\x1b[37m', `  \x1b[36m-\x1b[0m\x1b[37m ${gr.name}`)
         console.log('\x1b[0m\x1b[37m', `    \x1b[36m-\x1b[0m\x1b[37m ${gr.url}`)
