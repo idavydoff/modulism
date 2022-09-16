@@ -6,7 +6,7 @@ const getModules = require('../../getModules');
 const syncMode = async () => {
   const configData = getConfigData();
 
-  const { modules, moduleGroups } = await getModules(
+  const { modules, moduleGroups, modulesLinks } = await getModules(
     path.resolve(process.cwd(), configData.workDir), 
     configData.extensions.split(',').map((s) => s.trim()),
     configData.paths || {},
@@ -27,6 +27,7 @@ const syncMode = async () => {
     }
 
     res[modulesKeys[i]] = {
+      source: modulesLinks[modulesKeys[i]].replace(process.cwd(), ''),
       imports: modules[modulesKeys[i]]
         .map((mod) => `${mod.module}${mod.group ? ':' + mod.group : ''}`)
         .sort((a, b) => a.localeCompare(b)),

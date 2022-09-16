@@ -30,6 +30,7 @@ const getModules = async (path, extensions, paths, workDir) => {
   return {
     files: convertedFiles,
     modules: modulesWithImports,
+    modulesLinks,
     moduleGroups: ObjectFromEntries(Object.entries(modulesWithGroups).map(([mod, groups]) => {
       return [
         mod,

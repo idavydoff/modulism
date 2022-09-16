@@ -1,12 +1,14 @@
 # Modulism
-Library for keeping track of how modules depend on each other in your project. **Allows you to see where the module is being used and what other modules it imports by one command.**.
+CLI for keeping track of how modules depend on each other in your project. **Allows you to see where the module is being used and what other modules it imports by one command.**.
 
 [![npm version](https://img.shields.io/npm/v/modulism.svg?style=flat-square)](https://www.npmjs.com/package/modulism)
+
+![Example](https://i.imgur.com/8ryZALd.gif)
 
 [DOCUMENTATION](https://davy.page/modulism)
 
 ## Design goals
-* Simplify working with modular architecture in the project.
+* Simplify working with modular architecture in frontend apps.
 * Put information about how modules depend on each other into one place.
 * Make easier to detect unnecessary dependencies.
 
@@ -36,10 +38,10 @@ It simply reads all files in your working directory and parse all of their impor
     - src
         - one
             index.js
-            one.modulism (empty file)
+            one.modulism (module description or just an empty file)
         - two
             index.js
-            two.modulism (empty file)
+            two.modulism (module description or just an empty file)
     config.modulism.json
     package.json
 ```
@@ -96,14 +98,13 @@ Your modulism `paths` property:
 ```
 
 ### 2. Create modules
-Module is a folder with isolated code in it. Add an empty `<moduleName>.modulism` file in root directory of your module.
+Module is a folder with isolated code in it. Add a `<moduleName>.modulism` file in root directory of your module. It could be empty or has module's description in it.
 
 You can also split your modules by groups so the result data would be more informative for you. You can do it in two ways.
 1. Determine group directory.
+  To determine group directory just add `.<groupName>.modulism` file in your group directory.
 2. Determine group file.
-
-To determine group directory just add `.<groupName>.modulism` file in your group directory.
-To determine group file add `*modulism-group <groupName>` line in comments of your file.
+  To determine group file add `*modulism-group <groupName>` line in comments of your file.
 
 **Example module:**
 ```
@@ -127,7 +128,7 @@ To check the information about your project's modules run `modulism log` in term
 
 **Example log result of a module:**
 
-![Example](https://i.imgur.com/xABkyAJ.png)
+![Example](https://i.imgur.com/Gbtpyrc.png)
 ##### - Blue dots are groups which are being imported to module.
 ##### - Purple dots are groups which module is exporting.
 

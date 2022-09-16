@@ -1,4 +1,4 @@
-const path = require('path');
+const fs = require('fs');
 const { getConfigData } = require('../../utils/getConfigData');
 const { fireError } = require('../../utils/fireError');
 const { convertImports } = require('./convertImports');
@@ -22,7 +22,16 @@ const logMode = async () => {
     console.log('')
     console.log('\x1b[0m\x1b[7m', `Module: ${mod} \x1b[0m`);
 
-    const { imports, exports, groups } = configData.modules[mod];
+    const { source, imports, exports, groups } = configData.modules[mod];
+
+    if (source) {
+      const modulismFileURL = process.cwd() + source + mod + '.modulism';
+      const modulismFileContent = fs.readFileSync(modulismFileURL, "utf8");
+  
+      if (modulismFileContent.trim()) {
+        console.log(modulismFileContent)
+      }
+    }
 
     if (imports.length) {
       console.log('\x1b[0m\x1b[32m', 'Imports:');
