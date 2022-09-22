@@ -1,5 +1,5 @@
 # Modulism
-CLI for keeping track of how modules depend on each other in your project. **Allows you to see where the module is being used and what other modules it imports by one command.**.
+CLI for keeping track of how modules depend on each other in your project. **Allows you to see where the module is being used and what other modules it imports by one command.**
 
 [![npm version](https://img.shields.io/npm/v/modulism.svg?style=flat-square)](https://www.npmjs.com/package/modulism)
 
